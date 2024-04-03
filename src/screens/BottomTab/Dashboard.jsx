@@ -3,7 +3,7 @@ import React from 'react'
 
 const Dashboard = () => {
     return (
-        <View>
+        <View style={styles.center}>
             <Text>Dashboard</Text>
         </View>
     )
@@ -11,4 +11,11 @@ const Dashboard = () => {
 
 export default Dashboard
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    center:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF'
+    }
+})
