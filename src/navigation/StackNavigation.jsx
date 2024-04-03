@@ -9,16 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
 
-const BottomTab = () => {
-    return (
-        <Tab.Navigator>
-            <Tab.Screen name="DrawerNavigation" component={DrawerNavigation}  options={{headerShown:false}}/>
-            <Tab.Screen name="Profile" component={Profile} options={{headerShown:false}}/>
-        </Tab.Navigator>
-    )
-}
 
 const DrawerNavigation = () => {
     return (
