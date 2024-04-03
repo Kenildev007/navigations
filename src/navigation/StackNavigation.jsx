@@ -5,7 +5,8 @@ import {NavigationContainer} from '@react-navigation/native'
 import Home from '../screens/Home'
 import Profile from '../screens/Profile'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Splash from '../screens/Splash'
+import ProductDetail from '../screens/ProductDetail'
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -13,12 +14,10 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = () => {
     return (
-        
             <Drawer.Navigator>
                 <Drawer.Screen name="Home" component={Home} />
                 <Drawer.Screen name="Profile" component={Profile} />
             </Drawer.Navigator>
-        
     )
 };
 
@@ -26,7 +25,9 @@ const StackNavigation = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
+                <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}} />
                 <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{headerShown:false}} />
+                <Stack.Screen name="ProductDetail" component={ProductDetail} />
             </Stack.Navigator>
         </NavigationContainer>
     )
