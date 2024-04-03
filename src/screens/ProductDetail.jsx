@@ -15,6 +15,9 @@ const ProductDetail = ({ route }) => {
                     <Text style={styles.title}>${product.price}</Text>
                     <Text style={styles.description}>{product.description}</Text>
                     <View>
+                        <TouchableOpacity>
+                            
+                        </TouchableOpacity>
                         <Text style={styles.title}>Size:</Text>
                     </View>
                 </ScrollView>

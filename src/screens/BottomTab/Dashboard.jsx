@@ -5,6 +5,7 @@ const Dashboard = ({ navigation }) => {
     const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState();
 
     useEffect(() => {
         fetch('https://fakestoreapi.com/products/categories')
@@ -13,6 +14,10 @@ const Dashboard = ({ navigation }) => {
                 setCategory(data);
                 setLoading(false);
             })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+                setLoading(false);
+            });
         fetch('https://fakestoreapi.com/products')
             .then(response => response.json())
             .then(data => {
@@ -24,6 +29,12 @@ const Dashboard = ({ navigation }) => {
                 setLoading(false);
             });
     }, []);
+
+    const handleCategory = (item) => {
+        setSelectedCategory(item);
+    };
+
+    const filterData = selectedCategory ? data.filter(product => product.category === selectedCategory) : data;
 
     const handleClick = (item) => {
         navigation.navigate('ProductDetail', { product: item });
@@ -58,7 +69,7 @@ const Dashboard = ({ navigation }) => {
                     category.map((item, index) => {
                         return (
                             <View style={styles.categoriesContainer} key={index}>
-                                <TouchableOpacity style={styles.categoriesTouchable}>
+                                <TouchableOpacity onPress={() => handleCategory(item)} style={styles.categoriesTouchable}>
                                     <Text style={styles.categories}>{item}</Text>
                                 </TouchableOpacity>
                             </View>
@@ -68,7 +79,7 @@ const Dashboard = ({ navigation }) => {
             </ScrollView>
 
             <FlatList
-                data={data}
+                data={filterData}
                 renderItem={renderItem}
                 keyExtractor={item => item.id.toString()}
                 numColumns={2}
