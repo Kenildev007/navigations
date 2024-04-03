@@ -14,6 +14,12 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-navigations-navigationsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-navigations-navigationsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		2B5358F6652A4C0E97087401 /* Formula1-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4366FD27E73D475CA1E40695 /* Formula1-Bold.otf */; };
+		A39E02B785114756969EBAEA /* Formula1-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C99805E3FD84D84936BC879 /* Formula1-Regular.otf */; };
+		4733C34354704C4FB6D8869D /* Formula1-Wide.otf in Resources */ = {isa = PBXBuildFile; fileRef = AA7EDFD3CEEE4ACCAD477B05 /* Formula1-Wide.otf */; };
+		C1BB274F8D444B0A9310213E /* PPNeueMachina_ Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 014772A417AD4D07A9B6CB59 /* PPNeueMachina_ Light.ttf */; };
+		2833E4C6BC34468DBD94896C /* radikal_thin-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C1F4D172DE543C99DCA6DF0 /* radikal_thin-webfont.ttf */; };
+		0E5C22A440C6454A9FFBE539 /* zen dots.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75C6F5AB41104689A42C0677 /* zen dots.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,12 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = navigations/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-navigations-navigationsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-navigations-navigationsTests.release.xcconfig"; path = "Target Support Files/Pods-navigations-navigationsTests/Pods-navigations-navigationsTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		4366FD27E73D475CA1E40695 /* Formula1-Bold.otf */ = {isa = PBXFileReference; name = "Formula1-Bold.otf"; path = "../Assets/Fonts/Formula1-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3C99805E3FD84D84936BC879 /* Formula1-Regular.otf */ = {isa = PBXFileReference; name = "Formula1-Regular.otf"; path = "../Assets/Fonts/Formula1-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AA7EDFD3CEEE4ACCAD477B05 /* Formula1-Wide.otf */ = {isa = PBXFileReference; name = "Formula1-Wide.otf"; path = "../Assets/Fonts/Formula1-Wide.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		014772A417AD4D07A9B6CB59 /* PPNeueMachina_ Light.ttf */ = {isa = PBXFileReference; name = "PPNeueMachina_ Light.ttf"; path = "../Assets/Fonts/PPNeueMachina_ Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3C1F4D172DE543C99DCA6DF0 /* radikal_thin-webfont.ttf */ = {isa = PBXFileReference; name = "radikal_thin-webfont.ttf"; path = "../Assets/Fonts/radikal_thin-webfont.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		75C6F5AB41104689A42C0677 /* zen dots.ttf */ = {isa = PBXFileReference; name = "zen dots.ttf"; path = "../Assets/Fonts/zen dots.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +134,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				9BD7469D25B440BDA1845BC9 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -147,6 +160,20 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		9BD7469D25B440BDA1845BC9 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				4366FD27E73D475CA1E40695 /* Formula1-Bold.otf */,
+				3C99805E3FD84D84936BC879 /* Formula1-Regular.otf */,
+				AA7EDFD3CEEE4ACCAD477B05 /* Formula1-Wide.otf */,
+				014772A417AD4D07A9B6CB59 /* PPNeueMachina_ Light.ttf */,
+				3C1F4D172DE543C99DCA6DF0 /* radikal_thin-webfont.ttf */,
+				75C6F5AB41104689A42C0677 /* zen dots.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -243,6 +270,12 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				2B5358F6652A4C0E97087401 /* Formula1-Bold.otf in Resources */,
+				A39E02B785114756969EBAEA /* Formula1-Regular.otf in Resources */,
+				4733C34354704C4FB6D8869D /* Formula1-Wide.otf in Resources */,
+				C1BB274F8D444B0A9310213E /* PPNeueMachina_ Light.ttf in Resources */,
+				2833E4C6BC34468DBD94896C /* radikal_thin-webfont.ttf in Resources */,
+				0E5C22A440C6454A9FFBE539 /* zen dots.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

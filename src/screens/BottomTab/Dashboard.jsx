@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text, ActivityIndicator, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, ActivityIndicator, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 
-const Dashboard = ({navigation}) => {
+const Dashboard = ({ navigation }) => {
     const [data, setData] = useState([]);
+    const [category, setCategory] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        fetch('https://fakestoreapi.com/products/categories')
+            .then((response) => response.json())
+            .then(data => {
+                setCategory(data);
+                setLoading(false);
+            })
         fetch('https://fakestoreapi.com/products')
             .then(response => response.json())
             .then(data => {
@@ -19,7 +26,7 @@ const Dashboard = ({navigation}) => {
     }, []);
 
     const handleClick = (item) => {
-        navigation.navigate('ProductDetail' , {product: item});
+        navigation.navigate('ProductDetail', { product: item });
     };
 
     const renderItem = ({ item }) => (
@@ -46,19 +53,53 @@ const Dashboard = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                {
+                    category.map((item, index) => {
+                        return (
+                            <View style={styles.categoriesContainer} key={index}>
+                                <TouchableOpacity style={styles.categoriesTouchable}>
+                                    <Text style={styles.categories}>{item}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    })
+                }
+            </ScrollView>
+
             <FlatList
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={item => item.id.toString()}
                 numColumns={2}
             />
-        </View>
+        </View >
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    categoriesContainer: {
+        display: 'flex',
+    },
+    categoriesTouchable:{
+        marginVertical:10,
+        marginHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        borderRadius:10,
+    },
+    categories: {
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        height:42,
+        fontSize: 20,
+        color: '#000',
+        width: 'auto',
+        fontFamily: 'Formula1-Regular'
     },
     item: {
         backgroundColor: '#FFFFFF',
@@ -86,6 +127,7 @@ const styles = StyleSheet.create({
         marginTop: 3,
         fontSize: 12,
         color: '#000000',
+        fontFamily: 'radikal_thin-webfont',
     },
     loadingContainer: {
         justifyContent: 'center',
