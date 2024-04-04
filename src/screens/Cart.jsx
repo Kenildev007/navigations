@@ -14,10 +14,12 @@ const Cart = () => {
         dispatch(removeFromCart(item))
     };
 
+    const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity) , 0);
+
     return (
         <ScrollView>
             <View>
-                <Text style={styles.totalPrice}>Total Price: $</Text>
+                <Text style={styles.totalPrice}>Total Price: ${totalPrice}</Text>
                 {cartItems.length === 0 ? (
                     <Text style={styles.emptyCartText}>Cart is empty</Text>
                 ) : (
@@ -34,8 +36,7 @@ const Cart = () => {
                                     </TouchableOpacity>
                                 </View>
                                 <Text style={styles.price}>${item.price}</Text>
-
-                                <Counter />
+                                <Counter count={item.quantity} productId={item.id} />
                             </View>
                         </View>
                     ))
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '95%',
         padding: 20,
-        backgroundColor: '#C8FFE0',
+        backgroundColor: '#ffffff',
         flexDirection: 'row',
         margin: 8,
         flex: 1
