@@ -1,7 +1,5 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react';
-import Icon from 'react-native-vector-icons/AntDesign';
-import Counter from '../components/Counter';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/actions/cart';
 
@@ -9,21 +7,9 @@ const ProductDetail = ({ route, navigation }) => {
     const { product } = route.params;
     const dispatch = useDispatch();
 
-    const [count,setCount] = useState(1);
-
     const handleAddToCart = () => {
         dispatch(addToCart(product));
         navigation.navigate('Cart');
-        setCount(1);
-    }
-
-    const handleIncrement = () => {
-        setCount(count + 1);
-    }
-
-    const handleDecrement = () => {
-        if (count > 1)
-        setCount(count - 1);
     }
 
     return (
@@ -37,9 +23,6 @@ const ProductDetail = ({ route, navigation }) => {
                     <Text style={styles.title}>{product.title}</Text>
                     <Text style={styles.title}>${product.price}</Text>
                     <Text style={styles.description}>{product.description}</Text>
-
-                    <Counter count={count} onIncrement={handleIncrement} onDecrement={handleDecrement} />
-
                 </ScrollView>
             </View>
 
