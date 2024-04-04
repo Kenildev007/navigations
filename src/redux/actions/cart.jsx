@@ -11,9 +11,9 @@ export const decrement = (productId) => ({
     type: DECREMENT,
     payload: productId,
 })
-export const addToCart = (productId, quantity) => ({
+export const addToCart = (productId ) => ({
     type: ADD_TO_CART,
-    payload: {productId, quantity},
+    payload: productId,
 })
 export const removeFromCart = (productId) => ({
     type: REMOVE_FROM_CART,

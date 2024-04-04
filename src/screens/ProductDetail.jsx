@@ -12,7 +12,7 @@ const ProductDetail = ({ route, navigation }) => {
     const [count,setCount] = useState(1);
 
     const handleAddToCart = () => {
-        dispatch(addToCart(product, count));
+        dispatch(addToCart(product));
         navigation.navigate('Cart');
         setCount(1);
     }
