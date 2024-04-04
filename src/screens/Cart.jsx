@@ -17,27 +17,29 @@ const Cart = () => {
     return (
         <ScrollView>
             <View>
-                <Text style={styles.totalPrice}>Total Price: </Text>
-                {cartItems.map((item, index) => (
-
-                    <View key={index} style={styles.cartItemContainer}>
-                        <View>
-                            <Image style={styles.imageContainer}
-                                src={item.image}
-                            />
-                        </View>
-                        <View>
-                            <View style={styles.detailsLine}>
-                                <Text style={styles.titleText}>{item.title}</Text>
-                                <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}><Icon name="delete" size={20} /></TouchableOpacity>
+                <Text style={styles.totalPrice}>Total Price: $</Text>
+                {cartItems.length === 0 ? (
+                    <Text style={styles.emptyCartText}>Cart is empty</Text>
+                ) : (
+                    cartItems.map((item, index) => (
+                        <View key={index} style={styles.cartItemContainer}>
+                            <View>
+                                <Image style={styles.imageContainer} src={item.image} />
                             </View>
-                            <Text style={styles.price}>{item.price}</Text>
+                            <View>
+                                <View style={styles.detailsLine}>
+                                    <Text style={styles.titleText}>{item.title}</Text>
+                                    <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
+                                        <Icon name="delete" size={20} />
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={styles.price}>${item.price}</Text>
 
-                            <Counter />
-
+                                <Counter />
+                            </View>
                         </View>
-                    </View>
-                ))}
+                    ))
+                )}
             </View>
         </ScrollView>
     )
@@ -46,12 +48,17 @@ const Cart = () => {
 export default Cart
 
 const styles = StyleSheet.create({
-    totalPrice:{
-        marginTop:4,
+    emptyCartText:{
+        fontSize: 40,
+        textAlign: 'center',
+        color: '#000000',
+    },
+    totalPrice: {
+        marginTop: 4,
         fontSize: 18,
         fontWeight: 'bold',
         color: '#000000',
-        textAlign:'right',
+        textAlign: 'right',
         justifyContent: 'center',
     },
     cartItemContainer: {
@@ -77,7 +84,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         backgroundColor: '#C8sFFE0',
     },
-    titleText:{
+    titleText: {
         width: '85%',
     },
     price: {

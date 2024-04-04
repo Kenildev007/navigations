@@ -2,7 +2,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Dashboard from './BottomTab/Dashboard';
-import Setting from './BottomTab/Setting';
+import Cart from './Cart';
+// import Setting from './BottomTab/Setting';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +13,7 @@ const Home = () => {
     return (
         <Tab.Navigator>
             <Tab.Screen name="Dashboard" component={Dashboard} options={{headerShown:false}}/>
-            <Tab.Screen name="Setting" component={Setting} options={{headerShown:false}}  />
+            <Tab.Screen name="Cart" component={Cart} options={{headerShown:false}}  />
         </Tab.Navigator>
     )
 }
