@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import StackNavigation from './src/navigation/StackNavigation';
@@ -11,7 +10,7 @@ const App = () => {
   return (
     <>
       <Provider store={store}>
-        <PersistGate persistor={persistor}>
+        <PersistGate loading={null} persistor={persistor}>
           <StackNavigation />
         </PersistGate>
       </Provider>

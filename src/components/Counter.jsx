@@ -5,11 +5,11 @@ import Icon from 'react-native-vector-icons/AntDesign';
 const Counter = ({ count, onIncrement, onDecrement }) => {
     return (
         <View style={styles.counter}>
-            <TouchableOpacity onPress={onIncrement}>
+            <TouchableOpacity onPress={onDecrement}>
                 <Text style={styles.title}><Icon name="minuscircle" size={20} /></Text>
             </TouchableOpacity>
             <Text>{count}</Text>
-            <TouchableOpacity onPress={onDecrement}>
+            <TouchableOpacity onPress={onIncrement}>
                 <Text style={styles.title}><Icon name="pluscircle" size={20} /></Text>
             </TouchableOpacity>
         </View>

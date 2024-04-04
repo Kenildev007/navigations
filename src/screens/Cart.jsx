@@ -2,28 +2,42 @@ import { Image, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View 
 import React from 'react'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Counter from '../components/Counter'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeFromCart } from '../redux/actions/cart'
 
 const Cart = () => {
+    const cartItems = useSelector(state => state.cart.items);
+    const dispatch = useDispatch();
+
+    const handleRemoveFromCart = (item) => {
+        console.log('handleRemoveFromCart');
+        dispatch(removeFromCart(item))
+    };
+
     return (
         <ScrollView>
             <View>
-                <View style={styles.cartItemContainer}>
-                    <View>
-                        <Image style={styles.imageContainer}
-                            src='https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg'
-                        />
-                    </View>
-                    <View>
-                        <View style={styles.detailsLine}>
-                            <Text>item Name</Text>
-                            <TouchableOpacity><Icon name="delete" size={20} /></TouchableOpacity>
+                <Text style={styles.totalPrice}>Total Price: </Text>
+                {cartItems.map((item, index) => (
+
+                    <View key={index} style={styles.cartItemContainer}>
+                        <View>
+                            <Image style={styles.imageContainer}
+                                src={item.image}
+                            />
                         </View>
-                        <Text style={styles.price}>Price</Text>
+                        <View>
+                            <View style={styles.detailsLine}>
+                                <Text style={styles.titleText}>{item.title}</Text>
+                                <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}><Icon name="delete" size={20} /></TouchableOpacity>
+                            </View>
+                            <Text style={styles.price}>{item.price}</Text>
 
-                        <Counter  />
+                            <Counter />
 
+                        </View>
                     </View>
-                </View>
+                ))}
             </View>
         </ScrollView>
     )
@@ -32,6 +46,14 @@ const Cart = () => {
 export default Cart
 
 const styles = StyleSheet.create({
+    totalPrice:{
+        marginTop:4,
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#000000',
+        textAlign:'right',
+        justifyContent: 'center',
+    },
     cartItemContainer: {
         height: '100%',
         width: '95%',
@@ -54,6 +76,9 @@ const styles = StyleSheet.create({
         width: '85%',
         paddingHorizontal: 10,
         backgroundColor: '#C8sFFE0',
+    },
+    titleText:{
+        width: '85%',
     },
     price: {
         fontWeight: 'bold',
