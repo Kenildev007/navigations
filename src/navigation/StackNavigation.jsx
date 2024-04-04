@@ -7,6 +7,7 @@ import Profile from '../screens/Profile'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import Splash from '../screens/Splash'
 import ProductDetail from '../screens/ProductDetail'
+import Cart from '../screens/Cart'
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -28,6 +29,7 @@ const StackNavigation = () => {
                 <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}} />
                 <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{headerShown:false}} />
                 <Stack.Screen name="ProductDetail" component={ProductDetail} />
+                <Stack.Screen name="Cart" component={Cart} />
             </Stack.Navigator>
         </NavigationContainer>
     )

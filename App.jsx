@@ -3,11 +3,18 @@ import 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import StackNavigation from './src/navigation/StackNavigation';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './src/redux/store';
 
 const App = () => {
   return (
     <>
-      <StackNavigation />
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <StackNavigation />
+        </PersistGate>
+      </Provider>
     </>
   )
 }

@@ -1,8 +1,17 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/AntDesign';
+import Counter from '../components/Counter';
 
-const ProductDetail = ({ route }) => {
+const ProductDetail = ({ route, navigation }) => {
     const { product } = route.params;
+
+    const [count,setCount] = useState(1);
+
+    const handleAddToCart = () => {
+        navigation.navigate('Cart');
+    }
+
     return (
         <>
             <View style={styles.main}>
@@ -14,22 +23,29 @@ const ProductDetail = ({ route }) => {
                     <Text style={styles.title}>{product.title}</Text>
                     <Text style={styles.title}>${product.price}</Text>
                     <Text style={styles.description}>{product.description}</Text>
-                    <View>
+
+                    {/* <View style={styles.counter}>
                         <TouchableOpacity>
-                            
+                            <Text style={styles.title}><Icon name="minuscircle" size={22} /></Text>
                         </TouchableOpacity>
-                        <Text style={styles.title}>Size:</Text>
-                    </View>
+                        <Text>{count}</Text>
+                        <TouchableOpacity>
+                            <Text style={styles.title}><Icon name="pluscircle" size={22} /></Text>
+                        </TouchableOpacity>
+                    </View> */}
+
+                    <Counter count={count} />
+
                 </ScrollView>
             </View>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.addToCart}>
+                <TouchableOpacity onPress={()=> handleAddToCart()} style={styles.addToCart}>
                     <Text style={styles.btnText}>
                         Add To Cart
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buyNow}>
+                <TouchableOpacity onPress={() => handleAddToCart()} style={styles.buyNow}>
                     <Text style={styles.btnText}>
                         Buy Now
                     </Text>
@@ -45,7 +61,6 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         backgroundColor: 'white',
-        
     },
     Image: {
         width: "80%",
@@ -67,9 +82,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginHorizontal: 10,
         marginVertical: 4,
-        fontFamily:'PPNeueMachina_ Light',
-
+        fontFamily: 'PPNeueMachina_ Light',
         color: '#000000'
+    },
+    counter:{
+        flexDirection: 'row',
+        display:'flex',
+        alignItems: 'center',
+        marginTop:8
     },
     btnContainer: {
         flexDirection: 'row',
@@ -90,7 +110,6 @@ const styles = StyleSheet.create({
     },
     btnText: {
         textAlign: 'center',
-        fontFamily:'PPNeueMachina_ Light'
+        fontFamily: 'PPNeueMachina_ Light'
     },
-
 })
