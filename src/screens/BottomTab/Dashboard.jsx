@@ -18,21 +18,36 @@ const GET_ALL_PRODUCTS = gql`
         products(first: $first) {
             edges {
                 node {
-                    availableForSale
+                    images(first: 1){
+                        edges {
+                            node{
+                                url
+                            }
+                        }
+                    }
                     title
                     id
                     descriptionHtml
-                    options{
-                        name
-                        id
+                    description
+                    priceRange{
+                        minVariantPrice{
+                            amount
+                        }
+                    }
+                    variants(first:5){
+                        edges{
+                            node{
+                                image{
+                                    url
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
 `;
-
-
 
 const Dashboard = ({ navigation }) => {
     const [data, setData] = useState([]);
@@ -46,36 +61,36 @@ const Dashboard = ({ navigation }) => {
         },
         fetchPolicy: 'cache-and-network',
     });
-    console.log(data1, "data All queries    ")
+    console.log(data1, "data All queries")
 
-    useEffect(() => {
-        fetch('https://fakestoreapi.com/products/categories')
-            .then((response) => response.json())
-            .then(data => {
-                setCategory(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching categories:', error);
-                setLoading(false);
-            });
-        fetch('https://fakestoreapi.com/products')
-            .then(response => response.json())
-            .then(data => {
-                setData(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            });
-    }, []);
-
+    // useEffect(() => {
+    //     fetch('https://fakestoreapi.com/products/categories')
+    //         .then((response) => response.json())
+    //         .then(data => {
+    //             setCategory(data);
+    //             setLoading(false);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching categories:', error);
+    //             setLoading(false);
+    //         });
+    //     fetch('https://fakestoreapi.com/products')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setData(data);
+    //             setLoading(false);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching data:', error);
+    //             setLoading(false);
+    //         });
+    // }, []);
+    // console.log(data1.products?.edges?.node?.title, "ss");
     const handleCategory = (item) => {
         setSelectedCategory(item);
     };
 
-    const filterData = selectedCategory ? data.filter(product => product.category === selectedCategory) : data;
+    // const filterData = selectedCategory ? data.filter(product => product.category === selectedCategory) : data;
 
     const handleClick = (item) => {
         navigation.navigate('ProductDetail', { product: item });
@@ -86,43 +101,30 @@ const Dashboard = ({ navigation }) => {
             <View>
                 <Image
                     style={styles.image}
-                    src={item.image}
+                    src={item.node?.images?.edges[0]?.node?.url}
                 />
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.title} numberOfLines={4}>$ {item.price}</Text>
+                <Text style={styles.title} numberOfLines={4}>$ {item.node?.priceRange?.minVariantPrice?.amount}</Text>
+                <Text style={styles.title}>{item.node?.title}</Text>
                 <Text style={styles.description} numberOfLines={4}>{item.description}</Text>
             </View>
         </TouchableOpacity>
     );
 
-    if (loading) {
-        return (
-            <View style={[styles.container, styles.loadingContainer]}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <View style={[styles.container, styles.loadingContainer]}>
+    //             <ActivityIndicator size="large" color="#0000ff" />
+    //         </View>
+    //     );
+    // }
 
     return (
         <View style={styles.container}>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                {
-                    category.map((item, index) => {
-                        return (
-                            <View style={styles.categoriesContainer} key={index}>
-                                <TouchableOpacity onPress={() => handleCategory(item)} style={styles.categoriesTouchable}>
-                                    <Text style={styles.categories}>{item}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )
-                    })
-                }
-            </ScrollView>
 
             <FlatList
-                data={filterData}
+                data={data1?.products?.edges}
                 renderItem={renderItem}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={(item)=> item.node.id.toString()}
                 numColumns={2}
             />
         </View >
