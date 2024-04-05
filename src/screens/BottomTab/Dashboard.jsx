@@ -1,11 +1,52 @@
+import { gql, useQuery } from '@apollo/client';
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, ActivityIndicator, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+
+
+// const GET_ALL_PRODUCTS = gql`
+//     query GetAllProducts() {
+//         products(){
+//             pageInfo{
+//                 endCursor
+//                 hasNextPage
+//             }
+//         }
+//     }
+// `
+const GET_ALL_PRODUCTS = gql`
+    query GetAllProducts($first: Int) {
+        products(first: $first) {
+            edges {
+                node {
+                    availableForSale
+                    title
+                    id
+                    descriptionHtml
+                    options{
+                        name
+                        id
+                    }
+                }
+            }
+        }
+    }
+`;
+
+
 
 const Dashboard = ({ navigation }) => {
     const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState();
+
+    const { loadings, error, data: data1 } = useQuery(GET_ALL_PRODUCTS, {
+        variables: {
+            first: 10,
+        },
+        fetchPolicy: 'cache-and-network',
+    });
+    console.log(data1, "data All queries    ")
 
     useEffect(() => {
         fetch('https://fakestoreapi.com/products/categories')
@@ -95,18 +136,18 @@ const styles = StyleSheet.create({
     categoriesContainer: {
         display: 'flex',
     },
-    categoriesTouchable:{
-        marginVertical:10,
+    categoriesTouchable: {
+        marginVertical: 10,
         marginHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#ffffff',
-        borderRadius:10,
+        borderRadius: 10,
     },
     categories: {
         paddingVertical: 10,
         paddingHorizontal: 10,
-        height:42,
+        height: 42,
         fontSize: 20,
         color: '#000',
         width: 'auto',

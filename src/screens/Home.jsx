@@ -7,8 +7,6 @@ import Cart from './Cart';
 
 const Tab = createBottomTabNavigator();
 
-
-
 const Home = () => {
     return (
         <Tab.Navigator>
