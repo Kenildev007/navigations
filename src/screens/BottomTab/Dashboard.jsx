@@ -2,20 +2,13 @@ import { gql, useQuery } from '@apollo/client';
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, ActivityIndicator, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 
-
-// const GET_ALL_PRODUCTS = gql`
-//     query GetAllProducts() {
-//         products(){
-//             pageInfo{
-//                 endCursor
-//                 hasNextPage
-//             }
-//         }
-//     }
-// `
 const GET_ALL_PRODUCTS = gql`
-    query GetAllProducts($first: Int) {
-        products(first: $first) {
+    query GetAllProducts($first: Int, $after: String) {
+        products(first: $first, after: $after) {
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
             edges {
                 node {
                     images(first: 1){
@@ -50,47 +43,41 @@ const GET_ALL_PRODUCTS = gql`
 `;
 
 const Dashboard = ({ navigation }) => {
-    const [data, setData] = useState([]);
-    const [category, setCategory] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState();
+    const [cursor, setCursor] = useState('');
+    const [hasNextPage, setHasNextPage] = useState(false);
+    const [allProducts, setAllProducts] = useState([]);
 
-    const { loadings, error, data: data1 } = useQuery(GET_ALL_PRODUCTS, {
+    const { loading, error, data, fetchMore } = useQuery(GET_ALL_PRODUCTS, {
         variables: {
             first: 10,
         },
-        fetchPolicy: 'cache-and-network',
+        onCompleted: (data) => {
+            setCursor(data.products.pageInfo.endCursor);
+            setHasNextPage(data.products.pageInfo.hasNextPage);
+            setAllProducts(data.products.edges);
+        }
     });
-    console.log(data1, "data All queries")
+    console.log(cursor, "cursosr")
+    console.log(hasNextPage, "nexy")
+    console.log(allProducts, "All products");
 
-    // useEffect(() => {
-    //     fetch('https://fakestoreapi.com/products/categories')
-    //         .then((response) => response.json())
-    //         .then(data => {
-    //             setCategory(data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching categories:', error);
-    //             setLoading(false);
-    //         });
-    //     fetch('https://fakestoreapi.com/products')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setData(data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching data:', error);
-    //             setLoading(false);
-    //         });
-    // }, []);
-    // console.log(data1.products?.edges?.node?.title, "ss");
-    const handleCategory = (item) => {
-        setSelectedCategory(item);
-    };
+    // a function to load more prodcut when reach on the end of scrolling
+    const loadMore = () => {
+        if (hasNextPage) {
+            fetchMore({
+                variables: {
+                    after: cursor,
+                    first: 10,
+                },
+                updateQuery: (prev, { fetchMoreResult }) => {
+                    setHasNextPage(fetchMoreResult.products.pageInfo.hasNextPage);
+                    setCursor(fetchMoreResult.products.pageInfo.endCursor);
+                    setAllProducts([...allProducts, ...fetchMoreResult.products.edges]);
+                }
+            });
+        }
+    }
 
-    // const filterData = selectedCategory ? data.filter(product => product.category === selectedCategory) : data;
 
     const handleClick = (item) => {
         navigation.navigate('ProductDetail', { product: item });
@@ -99,10 +86,16 @@ const Dashboard = ({ navigation }) => {
     const renderItem = ({ item }) => (
         <TouchableOpacity onPress={() => handleClick(item)} style={styles.item}>
             <View>
+
                 <Image
                     style={styles.image}
-                    src={item.node?.images?.edges[0]?.node?.url}
+                    source={item.node?.images?.edges[0]?.node?.url ?
+                        { uri: item.node?.images?.edges[0]?.node?.url } :
+                        { uri: 'https://images.unsplash.com/photo-1604662941425-9642752c5c14?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29taW5ncyUyMHNvb258ZW58MHx8MHx8fDA%3D' }
+                    }
                 />
+
+
                 <Text style={styles.title} numberOfLines={4}>$ {item.node?.priceRange?.minVariantPrice?.amount}</Text>
                 <Text style={styles.title}>{item.node?.title}</Text>
                 <Text style={styles.description} numberOfLines={4}>{item.description}</Text>
@@ -110,22 +103,23 @@ const Dashboard = ({ navigation }) => {
         </TouchableOpacity>
     );
 
-    // if (loading) {
-    //     return (
-    //         <View style={[styles.container, styles.loadingContainer]}>
-    //             <ActivityIndicator size="large" color="#0000ff" />
-    //         </View>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <View style={[styles.container, styles.loadingContainer]}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
-
             <FlatList
-                data={data1?.products?.edges}
+                data={allProducts}
                 renderItem={renderItem}
-                keyExtractor={(item)=> item.node.id.toString()}
+                keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
+                onEndReached={() => loadMore()}
+                onEndReachedThreshold={0.5}
             />
         </View >
     );
