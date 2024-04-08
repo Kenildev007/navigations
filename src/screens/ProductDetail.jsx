@@ -91,17 +91,15 @@ const ProductDetail = ({ route, navigation }) => {
         }
     }, [data]);
 
-    // Inside the useEffect hook
-    // useEffect(() => {
-    //     if (data && data.product && data.product.options) {
-    //         const defaultSelectedValues = {};
-    //         data.product.options.forEach(option => {
-    //             defaultSelectedValues[option.name] = option.values[0];
-    //         });
-    //         setSelectedOptions(defaultSelectedValues);
-    //     }
-    // }, [data]); // Include data in the dependency array
+    // full variant node with id after selecting the values
+    const selectedVariant = data?.product?.variants?.edges
+        .filter(edge => edge?.node?.selectedOptions
+            .filter(option => selectedOptions[option.name] === option?.value)
+            .length == data?.product?.options.length)[0];
 
+    // print the selected variants node
+    const variantId = selectedVariant
+    console.log(variantId, "variant ndoeid");
 
     const handleSelectedOptions = (optionName, value) => {
         setSelectedOptions(prev => ({
