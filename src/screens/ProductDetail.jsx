@@ -1,11 +1,78 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/actions/cart';
+import { gql, useQuery } from '@apollo/client';
+
+const GET_SINGLE_PRODUCT_DETAILS = gql`
+    query GetSingleProductDetails($id : ID){
+        product(id: $id){
+            id
+            availableForSale
+            title
+            description
+            featuredImage{
+                id
+                url
+            }
+            compareAtPriceRange{
+                maxVariantPrice{
+                    amount
+                }
+                minVariantPrice{
+                    amount
+                }
+            }
+            options{
+                id
+                name
+                values
+            }
+            priceRange{
+                maxVariantPrice{
+                    amount
+                }
+                minVariantPrice{
+                    amount
+                }
+            }
+            variants(first: 150) {
+                edges {
+                    node {
+                    title
+                    availableForSale
+                    id
+                    selectedOptions {
+                        name
+                        value
+                        }
+                    compareAtPrice{
+                            amount
+                            currencyCode
+                        }
+                    price {
+                        amount
+                        currencyCode
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
 
 const ProductDetail = ({ route, navigation }) => {
-    const { product } = route.params;
+    const productId = route.params?.product?.node?.id;
+    const product = route.params;
+    console.log(productId, 'productID');
     const dispatch = useDispatch();
+
+    const { loading, error, data } = useQuery(GET_SINGLE_PRODUCT_DETAILS, {
+        variables: {
+            id: productId
+        }
+    })
+    console.log(data, 'SingleProduct Data');
 
     const handleAddToCart = () => {
         dispatch(addToCart(product));
@@ -18,16 +85,30 @@ const ProductDetail = ({ route, navigation }) => {
                 <ScrollView>
                     <Image
                         style={styles.Image}
-                        src={product.image}
+                        src={data?.product?.featuredImage?.url}
                     />
-                    <Text style={styles.title}>{product.title}</Text>
+                    <Text style={styles.title}>{data?.product?.title}</Text>
                     <Text style={styles.title}>${product.price}</Text>
-                    <Text style={styles.description}>{product.description}</Text>
+
+                    {data?.product?.options.map((option) => (
+                        <View key={option.name}>
+                            <Text style={styles.optionName}>{option.name}</Text>
+
+                            <View style={styles.values}>
+                                {option.values.map((value) => (
+                                    <TouchableOpacity style={styles.valueTouchable} key={value}>
+                                        <Text style={styles.valueText}>{value}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+
+                        </View>
+                    ))}
                 </ScrollView>
             </View>
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity onPress={()=> handleAddToCart()} style={styles.addToCart}>
+                <TouchableOpacity onPress={() => handleAddToCart()} style={styles.addToCart}>
                     <Text style={styles.btnText}>
                         Add To Cart
                     </Text>
@@ -65,18 +146,36 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginVertical: 4,
     },
-    description: {
-        fontSize: 16,
-        marginHorizontal: 10,
-        marginVertical: 4,
-        fontFamily: 'PPNeueMachina_ Light',
-        color: '#000000'
-    },
-    counter:{
+    counter: {
         flexDirection: 'row',
-        display:'flex',
+        display: 'flex',
         alignItems: 'center',
-        marginTop:8
+        marginTop: 8
+    },
+    optionName:{
+        marginHorizontal: 10,
+        fontFamily:'Formula1-Bold',
+    },
+    values: {
+        flexDirection: 'row',
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        marginLeft: 5,
+    },
+    valueTouchable:{
+        marginHorizontal: 3,
+        marginVertical: 3,
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderRadius:10,
+    },
+    valueText:{
+        fontFamily:'PPNeueMachina_ Light',
+        fontSize: 15,
+        color: '#000000',
+        marginHorizontal: 10,
+        marginVertical: 2,
     },
     btnContainer: {
         flexDirection: 'row',

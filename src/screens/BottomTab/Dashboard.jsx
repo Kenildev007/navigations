@@ -1,6 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, ActivityIndicator, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { SelectedProduct } from '../../redux/actions/productDetail';
 
 const GET_ALL_PRODUCTS = gql`
     query GetAllProducts($first: Int, $after: String) {
@@ -47,6 +49,8 @@ const Dashboard = ({ navigation }) => {
     const [hasNextPage, setHasNextPage] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
 
+    const dispatch = useDispatch();
+
     const { loading, error, data, fetchMore } = useQuery(GET_ALL_PRODUCTS, {
         variables: {
             first: 10,
@@ -57,8 +61,8 @@ const Dashboard = ({ navigation }) => {
             setAllProducts(data.products.edges);
         }
     });
-    console.log(cursor, "cursosr")
-    console.log(hasNextPage, "nexy")
+    // console.log(cursor, "cursosr")
+    // console.log(hasNextPage, "nexy")
     console.log(allProducts, "All products");
 
     // a function to load more prodcut when reach on the end of scrolling
@@ -79,12 +83,17 @@ const Dashboard = ({ navigation }) => {
     }
 
 
-    const handleClick = (item) => {
-        navigation.navigate('ProductDetail', { product: item });
+    // const handleClick = (item) => {
+    //     navigation.navigate('ProductDetail', { product: item });
+    // };
+
+    const handleProductSelect = (product) => {
+        dispatch(SelectedProduct(product));
+        navigation.navigate('ProductDetail', { product: product });
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity onPress={() => handleClick(item)} style={styles.item}>
+        <TouchableOpacity onPress={() => handleProductSelect(item)} style={styles.item}>
             <View>
 
                 <Image
@@ -95,10 +104,8 @@ const Dashboard = ({ navigation }) => {
                     }
                 />
 
-
                 <Text style={styles.title} numberOfLines={4}>$ {item.node?.priceRange?.minVariantPrice?.amount}</Text>
-                <Text style={styles.title}>{item.node?.title}</Text>
-                <Text style={styles.description} numberOfLines={4}>{item.description}</Text>
+                <Text style={styles.description} numberOfLines={4}>{item.node?.title}</Text>
             </View>
         </TouchableOpacity>
     );
