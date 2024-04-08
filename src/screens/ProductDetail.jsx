@@ -1,5 +1,5 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/actions/cart';
 import { gql, useQuery } from '@apollo/client';
@@ -67,6 +67,10 @@ const ProductDetail = ({ route, navigation }) => {
     console.log(productId, 'productID');
     const dispatch = useDispatch();
 
+    const [selectedOptions, setSelectedOptions] = useState({});
+
+
+
     const { loading, error, data } = useQuery(GET_SINGLE_PRODUCT_DETAILS, {
         variables: {
             id: productId
@@ -74,10 +78,43 @@ const ProductDetail = ({ route, navigation }) => {
     })
     console.log(data, 'SingleProduct Data');
 
+
+    // useEffect to select defult values
+    useEffect(() => {
+        if (data && data.product && data.product.options) {
+            const defaultSelectedValues = {};
+            data.product.options.forEach(option => {
+                defaultSelectedValues[option.name] = option.values[0];
+            });
+            setSelectedOptions(defaultSelectedValues);
+            console.log(defaultSelectedValues, 'defaultSelectedValues');
+        }
+    }, [data]);
+
+    // Inside the useEffect hook
+    // useEffect(() => {
+    //     if (data && data.product && data.product.options) {
+    //         const defaultSelectedValues = {};
+    //         data.product.options.forEach(option => {
+    //             defaultSelectedValues[option.name] = option.values[0];
+    //         });
+    //         setSelectedOptions(defaultSelectedValues);
+    //     }
+    // }, [data]); // Include data in the dependency array
+
+
+    const handleSelectedOptions = (optionName, value) => {
+        setSelectedOptions(prev => ({
+            ...prev,
+            [optionName]: value
+        }))
+    };
+    console.log(selectedOptions, 'Selected Options');
+
     const handleAddToCart = () => {
         dispatch(addToCart(product));
         navigation.navigate('Cart');
-    }
+    };
 
     return (
         <>
@@ -96,9 +133,17 @@ const ProductDetail = ({ route, navigation }) => {
 
                             <View style={styles.values}>
                                 {option.values.map((value) => (
-                                    <TouchableOpacity style={styles.valueTouchable} key={value}>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.valueTouchable,
+                                            value === selectedOptions[option.name] ? styles.selectedValue : null
+                                        ]}
+                                        key={value}
+                                        onPress={() => handleSelectedOptions(option.name, value)}
+                                    >
                                         <Text style={styles.valueText}>{value}</Text>
                                     </TouchableOpacity>
+
                                 ))}
                             </View>
 
@@ -123,7 +168,7 @@ const ProductDetail = ({ route, navigation }) => {
     )
 }
 
-export default ProductDetail
+export default ProductDetail;
 
 const styles = StyleSheet.create({
     main: {
@@ -152,9 +197,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 8
     },
-    optionName:{
+    optionName: {
         marginHorizontal: 10,
-        fontFamily:'Formula1-Bold',
+        fontFamily: 'Formula1-Bold',
     },
     values: {
         flexDirection: 'row',
@@ -163,15 +208,23 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginLeft: 5,
     },
-    valueTouchable:{
+    valueTouchable: {
         marginHorizontal: 3,
         marginVertical: 3,
         borderWidth: 1,
         borderColor: 'grey',
-        borderRadius:10,
+        borderRadius: 10,
     },
-    valueText:{
-        fontFamily:'PPNeueMachina_ Light',
+    selectedValue: {
+        marginHorizontal: 3,
+        marginVertical: 3,
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderRadius: 10,
+        backgroundColor: 'red',
+    },
+    valueText: {
+        fontFamily: 'PPNeueMachina_ Light',
         fontSize: 15,
         color: '#000000',
         marginHorizontal: 10,
